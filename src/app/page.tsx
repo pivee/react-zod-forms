@@ -28,10 +28,10 @@ export default function Home() {
     })
     .refine(data => data.password === data.confirmPassword, {
       message: 'Passwords do not match',
-      path: ['password', 'confirmPassword']
+      path: ['confirmPassword']
     })
   
-  const { register, handleSubmit } = useForm<FormData>({
+  const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(formSchema)
   });
 
@@ -44,21 +44,33 @@ export default function Home() {
       <form onSubmit={handleSubmit(submitFormData)}>
         <label>First name</label>
         <input type="text" {...register("firstName")} />
-        
+        {errors.firstName && <p>{errors.firstName.message}</p>}
+        <br />
+
         <label>Last name</label>
         <input type="text" {...register("lastName")} />
+        {errors.lastName && <p>{errors.lastName.message}</p>}
+        <br />
         
         <label>Email</label>
         <input type="email" {...register("email")} />
+        {errors.email && <p>{errors.email.message}</p>}
+        <br />
         
         <label>Age</label>
         <input type="number" {...register("age", { valueAsNumber: true })} />
+        {errors.age && <p>{errors.age.message}</p>}
+        <br />
         
         <label>Password</label>
         <input type="text" {...register("password")} />
+        {errors.password && <p>{errors.password.message}</p>}
+        <br />
         
         <label>Confirm password</label>
         <input type="text" {...register("confirmPassword")} />
+        {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
+        <br />
 
         <button type="submit">Submit</button>
       </form>
