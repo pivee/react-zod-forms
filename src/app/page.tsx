@@ -1,4 +1,8 @@
+'use client'
+
 import { ZodType, z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 type FormData = {
   firstName: string;
@@ -15,58 +19,46 @@ export default function Home() {
     lastName: z.string().nonempty().min(2).max(30),
     email: z.string().email(),
     age: z.number().positive().int(),
-    password: z.string().min(8).max(30),
-    confirmPassword: z.string().min(8).max(30)
+    password: z.string(),
+    confirmPassword: z.string()
   })
-    .refine(data => data.firstName !== data.lastName, {
-      message: 'First name and last name cannot be the same',
-      path: ['firstName', 'lastName']
-    })
     .refine(data => data.age >= 13, {
       message: 'You must be 13 or older',
       path: ['age']
     })
-    .refine(data => data.email !== data.password, {
-      message: 'Email and password cannot be the same',
-      path: ['email', 'password']
-    })
-    .refine(data => data.email !== data.confirmPassword, {
-      message: 'Email and password cannot be the same',
-      path: ['email', 'confirmPassword']
-    })
-    .refine(data => data.password !== data.confirmPassword, {
+    .refine(data => data.password === data.confirmPassword, {
       message: 'Passwords do not match',
       path: ['password', 'confirmPassword']
     })
-    .refine(data => data.password !== data.firstName, {
-      message: 'Password and first name cannot be the same',
-      path: ['password', 'firstName']
-    })
-    .refine(data => data.password !== data.lastName, {
-      message: 'Password and last name cannot be the same',
-      path: ['password', 'lastName']
-    });
   
+  const { register, handleSubmit } = useForm<FormData>({
+    resolver: zodResolver(formSchema)
+  });
+
+  function submitFormData (data: FormData) {
+    console.log(data);
+  }
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <form>
+      <form onSubmit={handleSubmit(submitFormData)}>
         <label>First name</label>
-        <input type="text"/>
+        <input type="text" {...register("firstName")} />
         
         <label>Last name</label>
-        <input type="text"/>
+        <input type="text" {...register("lastName")} />
         
         <label>Email</label>
-        <input type="email"/>
+        <input type="email" {...register("email")} />
         
         <label>Age</label>
-        <input type="number"/>
+        <input type="number" {...register("age", { valueAsNumber: true })} />
         
         <label>Password</label>
-        <input type="text"/>
+        <input type="text" {...register("password")} />
         
         <label>Confirm password</label>
-        <input type="text"/>
+        <input type="text" {...register("confirmPassword")} />
 
         <button type="submit">Submit</button>
       </form>
