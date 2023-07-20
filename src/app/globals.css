@@ -17,3 +17,24 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+form {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.App {
+  display: flex;
+  justify-content: center;
+}
+
+form>input {
+  margin-bottom: 0.5em;
+}
+
+button {
+  margin-top: 1em;
+  padding: 0.25em;
+  border: 1px solid grey;
+}
