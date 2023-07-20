@@ -22,6 +22,7 @@ form {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  width: 320px;
 }
 
 .App {
@@ -29,12 +30,17 @@ form {
   justify-content: center;
 }
 
-form>input {
-  margin-bottom: 0.5em;
-}
-
 button {
   margin-top: 1em;
   padding: 0.25em;
   border: 1px solid grey;
+}
+
+label {
+  font-weight: 600;
+}
+
+p {
+  color: red;
+  font-size: 0.8em;
 }
